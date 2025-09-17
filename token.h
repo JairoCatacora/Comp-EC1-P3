@@ -24,6 +24,10 @@ public:
         SEMICOL, // ;
         PRINT,    // print
         ASSIGN,   // =
+        STRING,
+        MIN,
+        RAND,
+        COMA,
         END      // Fin de entrada
     };
 

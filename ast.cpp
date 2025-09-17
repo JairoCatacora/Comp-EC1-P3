@@ -46,9 +46,10 @@ SqrtExp::~SqrtExp() {}
 Program::Program(){}
 Program::~Program(){}
 Stm::~Stm(){}
-PrintStm::PrintStm(Exp* e1){
+PrintStm::PrintStm(list<Exp*> e1){
     e=e1;
 }
+
 PrintStm::~PrintStm(){}
 AssignStm::AssignStm(string id1, Exp* rhs1){
     id = id1;
@@ -62,3 +63,11 @@ IdExp::IdExp(string v) {
 IdExp::~IdExp() {
 }
 
+RandExp::RandExp(Exp* e1,Exp* e2): e1(e1), e2(e2) {};
+RandExp::~RandExp() {}
+
+MinExp::MinExp(list<Exp*> e): e(e) {};
+MinExp::~MinExp() {}
+
+StrExp::StrExp(string v): val(v) {};
+StrExp::~StrExp() {}

@@ -4,6 +4,8 @@
 #include "ast.h"
 #include "visitor.h"
 
+#include <stdlib.h>
+
 
 using namespace std;
 unordered_map<std::string, int> memoria;
@@ -36,6 +38,19 @@ int PrintStm::accept(Visitor* visitor) {
     return visitor->visit(this);
 }
 
+int RandExp::accept(Visitor* visitor) {
+    return visitor->visit(this);
+}
+
+int MinExp::accept(Visitor* visitor) {
+    return visitor->visit(this);
+}
+
+int StrExp::accept(Visitor* visitor) {
+    return visitor->visit(this);
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 int PrintVisitor::visit(BinaryExp* exp) {
@@ -66,6 +81,31 @@ void PrintVisitor::imprimir(Program* programa){
         cout << endl;
     }
     return ;
+}
+
+int PrintVisitor::visit(RandExp* exp) {
+    cout << "rand(";
+    exp->e1->accept(this);
+    cout << ",";
+    exp->e2->accept(this);
+    cout <<  ")";
+    return 0;
+}
+
+int PrintVisitor::visit(MinExp* exp) {
+    cout << "min(";
+    for (auto e: exp->e) {
+        e->accept(this);
+        cout << ",";
+    }
+    
+    cout <<  ")";
+    return 0;
+}
+
+int PrintVisitor::visit(StrExp* exp) {
+    cout << '\'' << exp->val << '\'';
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +149,26 @@ int EVALVisitor::visit(SqrtExp* exp) {
     return floor(sqrt( exp->value->accept(this)));
 }
 
+int EVALVisitor::visit(RandExp* exp) {
+    auto M = exp->e1->accept(this);
+    auto N = exp->e2->accept(this);
+    auto numero = rand () % (N-M+1) + M;
+    return numero;
+}
+
+int EVALVisitor::visit(MinExp* exp) {
+    auto res = 0;
+    for (auto e: exp->e) {
+        res = min(res, e->accept(this));
+    }
+    return res;
+}
+
+int EVALVisitor::visit(StrExp* exp) {
+    cout << exp->val;
+    return 0;
+}
+
 
 void EVALVisitor::interprete(Program* programa){
     if (programa)
@@ -124,7 +184,9 @@ void EVALVisitor::interprete(Program* programa){
 ///////////////////////////////////////////////////////////////////////
 
 int EVALVisitor::visit(PrintStm* stm) {
-    cout << stm->e->accept(this);
+    for (auto l: stm->e)
+        cout << l->accept(this) << " ";
+    cout << endl;
     return 0;
 }
 
@@ -150,7 +212,9 @@ int EVALVisitor::visit(Program* p) {
 
 int PrintVisitor::visit(PrintStm* stm) {
     cout << "print(";
-    stm -> e ->accept(this);
+    for (auto l: stm->e) {
+        l->accept(this);
+    }
     cout << ")" << endl;
     return 0;
 }

@@ -30,6 +30,11 @@ for i in range(1, 11):
         run_cmd = ["./a.out", filepath]
         result = subprocess.run(run_cmd, capture_output=True, text=True)
 
+        print(result.stdout)
+        if result.stderr:
+            print("Error:", result.stderr)
+
+
         # Guardar stdout y stderr
         output_file = os.path.join(output_dir, f"output{i}.txt")
         with open(output_file, "w", encoding="utf-8") as f:

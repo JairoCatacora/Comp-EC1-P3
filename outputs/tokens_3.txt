@@ -1,10 +1,22 @@
 Scanner
 
-TOKEN(NUM, "1")
-TOKEN(PLUS, "+")
-TOKEN(NUM, "2")
-TOKEN(PLUS, "+")
-TOKEN(NUM, "3")
+TOKEN(ID, "y")
+TOKEN(ASSIGN, "=")
+TOKEN(SQRT, "sqrt")
+TOKEN(LPAREN, "(")
+TOKEN(NUM, "16")
+TOKEN(RPAREN, ")")
+TOKEN(SEMICOL, ";")
+TOKEN(PRINT, "print")
+TOKEN(LPAREN, "(")
+TOKEN(STRING, "'")
+TOKEN(ID, "Resultado")
+TOKEN(ID, "de")
+TOKEN(ID, "y")
+TOKEN(STRING, "'")
+TOKEN(COMA, ",")
+TOKEN(ID, "y")
+TOKEN(RPAREN, ")")
 TOKEN(END)
 
 Scanner exitoso

@@ -80,9 +80,9 @@ public:
 
 class PrintStm: public Stm{
 public:
-    Exp* e;
+    list<Exp*> e;
     int accept(Visitor* visitor);
-    PrintStm(Exp*);
+    PrintStm(list<Exp*>);
     ~PrintStm();
 };
 
@@ -94,6 +94,32 @@ public:
     ~Program();
 }
 ;
+
+class RandExp : public Exp {
+public:
+    Exp* e1;
+    Exp* e2;
+    int accept(Visitor* visitor);
+    RandExp(Exp* e1,Exp* e2);
+    ~RandExp();
+};
+
+class MinExp : public Exp {
+public:
+    list<Exp*> e;
+    int accept(Visitor* visitor);
+    MinExp(list<Exp*> e);
+    ~MinExp();
+};
+
+class StrExp : public Exp {
+public:
+    string val;
+    int accept(Visitor* visitor);
+    StrExp(string v);
+    ~StrExp();
+};
+
 
 #endif // AST_H
 

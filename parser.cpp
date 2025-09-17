@@ -76,9 +76,16 @@ Stm* Parser::parseStm() {
     string nombre;
     if(match(Token::PRINT)) {
         match(Token::LPAREN);
-        e = parseCE();
+        list<Exp*> res; 
+        e = parsePA();
+        res.push_back(e);
+        while (match(Token::COMA)) {
+            e = parsePA();
+            res.push_back(e);
+        }
+        // siempre se leen los string y luego las esp numericas
         match(Token::RPAREN);
-        return new PrintStm(e);
+        return new PrintStm(res);
     }
     else if(match(Token::ID)) {
         nombre = previous->text;
@@ -156,7 +163,55 @@ Exp* Parser::parseF() {
     {
         return new IdExp(previous->text);
     }
+    else if (match(Token::MIN)) {
+        match(Token::LPAREN);
+        list<Exp*> res;
+        e = parseCE();
+        res.push_back(e);
+        while (match(Token::COMA))
+        {
+            e = parseCE();
+            res.push_back(e);
+        }
+        
+        match(Token::RPAREN);
+        return new MinExp(res);
+    }
+
+    else if (match(Token::RAND)) {
+        match(Token::LPAREN);
+        Exp* e1 = parseCE();
+        match(Token::COMA);
+        Exp* e2 = parseCE();
+        match(Token::RPAREN);
+        return new RandExp(e1, e2);
+    }
+
     else {
         throw runtime_error("Error sintáctico");
     }
+}
+
+Exp* Parser::parsePA() {
+    Exp* e;
+    if (match(Token::STRING)) {
+        e = parseS();
+        return e;
+    }
+    e = parseCE();
+    return e;
+}
+
+Exp* Parser::parseS() {
+    list<Token*> e;
+    while (match(Token::STRING)) {
+        auto p = previous;
+        
+        e.push_back(previous);
+    }
+    string res = "";
+    for (auto l: e) {
+        res += l->text;
+    }
+    return new StrExp(res);
 }

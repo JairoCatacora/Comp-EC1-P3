@@ -20,6 +20,8 @@ public:
     Exp* parseE();                   // Regla gramatical E
     Exp* parseT();                   // Regla gramatical T
     Exp* parseF();                   // Regla gramatical F
+    Exp* parsePA();                   // Regla gramatical F
+    Exp* parseS();                   // Regla gramatical F
 };
 
 #endif // PARSER_H      
