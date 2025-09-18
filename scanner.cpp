@@ -56,22 +56,24 @@ Token* Scanner::nextToken() {
         if (lexema=="sqrt") return new Token(Token::SQRT, input, first, current - first);
         else if (lexema=="print") return new Token(Token::PRINT, input, first, current - first);
         else if (lexema=="min") return new Token(Token::MIN, input, first, current - first);
-        else if (lexema=="rand") return new Token(Token::MIN, input, first, current - first);
+        else if (lexema=="rand") return new Token(Token::RAND, input, first, current - first);
         else return new Token(Token::ID, input, first, current - first);
     }
 
-    // else if (c=='\'') {
-    //     current++;
-    //     while (current < input.length() && isalnum(input[current])) {
-    //         current++;
-    //         cout << current << " ";
-    //     }
-    //     string lexema = input.substr(first, current - first);
-    //     return new Token(Token::STRING, input, first, current - first);
-    // }
+    else if (c == '\'') {
+        current++;
+        while (current < input.length()) {
+            if (input[current] == '\'') {
+                current++;
+                break;
+            }
+            current++;
+        }
+        token = new Token(Token::STRING, input, first + 1, current - first - 2);
+    }
 
     // Operadores
-    else if (strchr("+/-*();=,'", c)) {
+    else if (strchr("+/-*();=,", c)) {
         switch (c) {
             case ';': token = new Token(Token::SEMICOL,  c); break;
             case '=': token = new Token(Token::ASSIGN, c); break;
@@ -91,7 +93,6 @@ Token* Scanner::nextToken() {
             case '(': token = new Token(Token::LPAREN,c); break;
             case ')': token = new Token(Token::RPAREN,c); break;
             case ',': token = new Token(Token::COMA,c); break;
-            case '\'': token = new Token(Token::STRING,c); break;
         }
         current++;
     }

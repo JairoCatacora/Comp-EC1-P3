@@ -94,9 +94,11 @@ int PrintVisitor::visit(RandExp* exp) {
 
 int PrintVisitor::visit(MinExp* exp) {
     cout << "min(";
+    bool first = true;
     for (auto e: exp->e) {
+        cout << (first ? "" : ",");
         e->accept(this);
-        cout << ",";
+        first = false;
     }
     
     cout <<  ")";
@@ -150,6 +152,7 @@ int EVALVisitor::visit(SqrtExp* exp) {
 }
 
 int EVALVisitor::visit(RandExp* exp) {
+    srand(time(0));
     auto M = exp->e1->accept(this);
     auto N = exp->e2->accept(this);
     auto numero = rand () % (N-M+1) + M;
@@ -157,7 +160,7 @@ int EVALVisitor::visit(RandExp* exp) {
 }
 
 int EVALVisitor::visit(MinExp* exp) {
-    auto res = 0;
+    auto res = exp->e.front()->accept(this);
     for (auto e: exp->e) {
         res = min(res, e->accept(this));
     }
@@ -184,8 +187,16 @@ void EVALVisitor::interprete(Program* programa){
 ///////////////////////////////////////////////////////////////////////
 
 int EVALVisitor::visit(PrintStm* stm) {
-    for (auto l: stm->e)
-        cout << l->accept(this) << " ";
+    for (auto l: stm->e) {
+        StrExp* strExp = dynamic_cast<StrExp*>(l);
+        if (strExp) {
+            cout << strExp->val;
+        } else {
+            int result = l->accept(this);
+            cout << result;
+        }
+        cout << " ";
+    }
     cout << endl;
     return 0;
 }
@@ -212,8 +223,11 @@ int EVALVisitor::visit(Program* p) {
 
 int PrintVisitor::visit(PrintStm* stm) {
     cout << "print(";
+    bool first = true;
     for (auto l: stm->e) {
+        cout << (first ? "" : ",");
         l->accept(this);
+        first = false;
     }
     cout << ")" << endl;
     return 0;

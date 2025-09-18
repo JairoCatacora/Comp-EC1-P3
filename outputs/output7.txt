@@ -1,4 +1,10 @@
 === STDOUT ===
+Parseo exitoso
+Codigo:
+p = min(8,6,9,2)
+print('mínimo:',p)
+
+Interprete:mínimo: 2 
+
 
 === STDERR ===
-Error al parsear: Error lexico

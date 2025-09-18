@@ -83,7 +83,6 @@ Stm* Parser::parseStm() {
             e = parsePA();
             res.push_back(e);
         }
-        // siempre se leen los string y luego las esp numericas
         match(Token::RPAREN);
         return new PrintStm(res);
     }
@@ -203,15 +202,6 @@ Exp* Parser::parsePA() {
 }
 
 Exp* Parser::parseS() {
-    list<Token*> e;
-    while (match(Token::STRING)) {
-        auto p = previous;
-        
-        e.push_back(previous);
-    }
-    string res = "";
-    for (auto l: e) {
-        res += l->text;
-    }
-    return new StrExp(res);
+    string content = previous->text;
+    return new StrExp(content);
 }

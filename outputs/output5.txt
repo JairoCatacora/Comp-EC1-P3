@@ -1,4 +1,10 @@
 === STDOUT ===
+Parseo exitoso
+Codigo:
+b = rand(1,10)
+print('Número aleatorio:',b)
+
+Interprete:Número aleatorio: 7 
+
 
 === STDERR ===
-Error al parsear: Error sintáctico
